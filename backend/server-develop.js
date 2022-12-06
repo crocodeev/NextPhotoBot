@@ -7,7 +7,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../webpack/frontend.dev.config';
 import api from './routers/api';
-
+import fileUpload from 'express-fileupload';
 
 const app = express();
 const DIST_DIR = __dirname;
@@ -19,6 +19,7 @@ app.use(webpackDevMiddleware(compiler, {
   }));
 
 app.use(webpackHotMiddleware(compiler));  
+app.use(fileUpload());
 app.use(express.json());
 app.use('/api', api);
 

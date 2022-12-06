@@ -1,15 +1,7 @@
-* {
-    text-align: center;
+html {
+    height: 100%;
 }
 
-td {
-    border-style: solid;
-}
-
-table {
-    width: 100%;
-}
-
-textarea {
-    width: 100%;
+body {
+    height: 100%;
 }

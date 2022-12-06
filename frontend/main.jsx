@@ -1,52 +1,36 @@
-import { useEffect, useState } from "react";
-import ColorPallete from "./companents/ColorPallete";
-import ExpandBtn from "./companents/ExpandBtn";
-import CloseBtn from "./companents/CloseBtn";
-import ToggleMainBtn from "./companents/ToggleMainBtn";
-import UserInfo from "./companents/UserInfo";
-import ValidationForm from "./companents/ValidationForm";
+import FolderList from "./companents/FolderList";
+import Spinner from "./companents/Spinner";
+import ButtonAppBar from "./companents/ButtonAppBar";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { green, yellow } from '@mui/material/colors';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      main: green[500],
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: "#FFFFFF",
+    },
+    info: {
+      main: yellow[300],
+    },
+    text:{
+      primary: "#FFFFFF"
+    }
+  },
+});
 
 const App = () => {
 
-    const [ themeScheme, setThemeScheme ] = useState({}); 
-
-    const setColors = () => {
-      const theme = window.Telegram.WebApp.themeParams;
-      const html = document.getElementsByTagName('html')[0];
-      html.style.backgroundColor = theme.bg_color;
-      html.style.color = theme.text_color;
-
-      setThemeScheme(() => {
-       return( {
-        ...themeScheme,
-        ...theme
-      })
-      })
-    }
-
-  useEffect(() => {
-      setColors();
-      window.Telegram.WebApp.onEvent('themeChanged', setColors);
-      return(() => {
-          window.Telegram.WebApp.offEvent('themeChanged', setColors);
-      })
-  }, [])
-
     return(
-      <div>
-        <h3>Telegram WebApp API Demo</h3>
-        <hr/>
-        <ColorPallete themeParams={themeScheme}></ColorPallete>
-        <hr/>
-        <ExpandBtn />
-        <CloseBtn />
-        <ToggleMainBtn />
-        <hr/>
-        <UserInfo />
-        <hr/>
-        <h3>Validation</h3>
-        <ValidationForm />
-      </div>
+      <ThemeProvider theme={theme}>
+        <Spinner />
+        <ButtonAppBar />
+        <FolderList/>
+      </ThemeProvider>
     );
 }
 
