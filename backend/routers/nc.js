@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import tgValidatiion from '../middleware/tgValidation';
+import userAuthorization from '../middleware/userAuthorization';
 import dayjs from 'dayjs';
 import Nextcloud from '../nextcloud/nextcloud';
 import path from 'path';
@@ -8,12 +9,13 @@ import CyrillicToTranslit from 'cyrillic-to-translit-js';
 
 
 const cyrillicToTranslit = new CyrillicToTranslit();
-const api = new Router();
+const nc = new Router();
 const nextcloud = new Nextcloud();
 
 //api.use(tgValidatiion);
+nc.use(userAuthorization)
 
-api.post('/folders', async (req, res) => {
+nc.post('/folders', async (req, res) => {
 
     const folderName = req.body.folder;
 
@@ -32,7 +34,7 @@ api.post('/folders', async (req, res) => {
     
 });
 
-api.post('/file', async (req, res) => {
+nc.post('/file', async (req, res) => {
 
     if (!req.files) {
         return res.status(400).send('No files were uploaded.');
@@ -74,4 +76,4 @@ api.post('/file', async (req, res) => {
     
 });
 
-export default api;
+export default nc;

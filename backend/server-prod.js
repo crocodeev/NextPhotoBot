@@ -1,20 +1,23 @@
-/**
+ /**
  * @todo add ssl sertificate
  */
-require('dotenv');
+require('dotenv').config({
+    path: './settings/.env'
+});
 const express = require('express');
 const path = require('path');
-
+import nc from './routers/nc';
+import fileUpload from 'express-fileupload';
 const app = express();
 const DIST_DIR = __dirname;
-const HTML_FILE = path.join(DIST_DIR, '../frontend/index.html');
-console.log("HTML_FILE: ", HTML_FILE);
+const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 app.use(express.static(DIST_DIR));
+app.use(fileUpload());
 app.use(express.json());
-app.use('/api', api);
+app.use('/nc', nc);
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(HTML_FILE);
 })
 

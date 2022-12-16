@@ -6,24 +6,28 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../webpack/frontend.dev.config';
-import api from './routers/api';
+console.log(config);
+import nc from './routers/nc';
 import fileUpload from 'express-fileupload';
 
 const app = express();
 const DIST_DIR = __dirname;
 const HTML_FILE = path.join(DIST_DIR, '../frontend/index.html');
+const ADMIN_HTML_FILE = path.join(DIST_DIR, '../frontend/admin.html');
 const compiler = webpack(config);
 
+
 app.use(webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath
+    publicPath: '/'
   }));
 
 app.use(webpackHotMiddleware(compiler));  
 app.use(fileUpload());
 app.use(express.json());
-app.use('/api', api);
+app.use('/nc', nc);
+app.use
 
-app.get('*', (req, res, next) => {
+app.get('/', (req, res, next) => {
     compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
     if (err) {
       
@@ -33,7 +37,7 @@ app.get('*', (req, res, next) => {
     res.send(result)
     res.end()
     })
-  });
+  });  
 
 
 const PORT = process.env.PORT || 8080;

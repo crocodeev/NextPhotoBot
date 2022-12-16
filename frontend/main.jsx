@@ -1,8 +1,9 @@
 import FolderList from "./companents/FolderList";
 import Spinner from "./companents/Spinner";
 import ButtonAppBar from "./companents/ButtonAppBar";
+import UploadForm from "./companents/UploadForm";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { green, yellow } from '@mui/material/colors';
+import { green, yellow, blue } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
@@ -16,6 +17,7 @@ const theme = createTheme({
     },
     info: {
       main: yellow[300],
+      light: blue[300]
     },
     text:{
       primary: "#FFFFFF"
@@ -29,6 +31,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Spinner />
         <ButtonAppBar />
+        <UploadForm />
         <FolderList/>
       </ThemeProvider>
     );
