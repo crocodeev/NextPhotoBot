@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'; 
-dotenv.config();
+dotenv.config({path: './settings/.env'});
 import crypto from 'crypto';
 
 //parse initData string, take hash only
