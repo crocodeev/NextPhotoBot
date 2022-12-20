@@ -4,9 +4,12 @@ import { setUser } from '../db/db';
 const TelegramBot = require('node-telegram-bot-api');
 
 const token = process.env.TELEGRAM;
+const userAdminChat = process.env.USER_CHAT_ADMIN;
 const publicUrl = process.env.PUBLIC_URL;
 
-let bot;
+const runBot = async () => {
+
+  let bot;
 
 //hooks or polling 
 
@@ -22,6 +25,7 @@ if(publicUrl){
 
   bot.onText(/\/authorize/, async (msg) => {
 
+    const requestChatID = msg.chat.id;
     const user = msg.from;
 
     //keyboard
@@ -58,23 +62,31 @@ if(publicUrl){
         const result = await setUser(user)
         
         if(result){
-          bot.sendMessage(msg.chat.id, 'Пользователь добавлен');
+          bot.sendMessage(userAdminChat, 'Пользователь добавлен');
+          bot.sendMessage(requestChatID, 'Пользователь добавлен');
+          
         }else{
-          bot.sendMessage(msg.chat.id, 'Внутренняя ошибка сервера, см. лог');
+          bot.sendMessage(userAdminChat, 'Запрос отклонён');
+          bot.sendMessage(requestChatID, 'Внутренняя ошибка сервера, см. лог');
         }
 
       }else{
-        bot.sendMessage(msg.chat.id, 'Запрос отклонён');
+        bot.sendMessage(userAdminChat, 'Запрос отклонён');
+        bot.sendMessage(requestChatID, 'Запрос отклонён');
       }
 
       bot.removeListener("callback_query");
     });
 
     //send keyboard
-    bot.sendMessage(msg.from.id, `Разрешить ${user.first_name} ${user.last_name} загружать фотографии`, opts);
+    bot.sendMessage(userAdminChat, `Разрешить ${user.first_name} ${user.last_name} загружать фотографии`, opts);
 
   })
 
   bot.on('sticker', (msg) => {
     console.log(msg);
   })
+
+}
+
+export default runBot;

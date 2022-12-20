@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const startFolders = ['/FotoObjects\ SPb', '/FotoObjects\ MSK'];
+
 export const folderSlice = createSlice({
   name: 'folders',
   initialState: {
-    folders: [['/FotoObjects\ SPb', '/FotoObjects\ MSK']],
+    folders: [startFolders],
     choosen: null,
     modal: false
   },

@@ -4,7 +4,10 @@ const userAuthorization = async (req, res, next) => {
 
     console.log(req.body);
 
-    const user = typeof req.body.user === "string" ? JSON.parse(JSON.parse(req.body.user)) : req.body.user;
+    console.log("ТИП ПОЛЬЗОВАТЕЛЯ");
+    console.log(typeof req.body.user);
+
+    const user = typeof req.body.user === "string" ? JSON.parse(req.body.user) : req.body.user;
 
     console.log(user);
 
