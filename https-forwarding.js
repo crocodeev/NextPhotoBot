@@ -1,11 +1,11 @@
-require('dotenv');
+require('dotenv').config({path: './settings/.env'});
 const ngrok = require('ngrok');
 
 async function getDevelopUrl(token) {
     
     const URL = await ngrok.connect({
         authtoken: token,
-        addr: 8080,
+        addr: process.env.PORT,
         host_header: "localhost",
     });
 
