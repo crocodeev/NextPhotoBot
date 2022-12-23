@@ -45,7 +45,7 @@ export default function ButtonAppBar() {
           </IconButton>
 
           <Typography variant="h6" color='text.primary' component="div" sx={{ flexGrow: 1 }}>
-            Sweet Memories
+            Sweet Memory
           </Typography>
          
         </Toolbar>

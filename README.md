@@ -23,3 +23,6 @@ Writing for buisness process in my company, but may be suits for your purposes.
 - [ ] add logger
 - [ ] create folder
 - [ ] add mongo db (now using file db)
+- [ ] send uploads logs to common chat
+- [ ] send log to chat with user
+- [ ] manual

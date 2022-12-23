@@ -1,12 +1,14 @@
-import * as dotenv from 'dotenv'; 
-dotenv.config();
+require('dotenv').config({
+  path: './settings/.env'
+});
+
+
 import path from 'path';
 import express from 'express'
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../webpack/frontend.dev.config';
-console.log(config);
 import nc from './routers/nc';
 import fileUpload from 'express-fileupload';
 

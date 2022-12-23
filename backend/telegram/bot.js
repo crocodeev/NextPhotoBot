@@ -5,88 +5,146 @@ const TelegramBot = require('node-telegram-bot-api');
 
 const token = process.env.TELEGRAM;
 const userAdminChat = process.env.USER_CHAT_ADMIN;
+const commonChat = process.env.COMMON_CHAT;
 const publicUrl = process.env.PUBLIC_URL;
 
-const runBot = async () => {
+class Bot {
 
-  let bot;
+  constructor(token,
+              userAdminChat,
+              commonChat,
+              publicUrl){
 
-//hooks or polling 
+                if(!!Bot.instance){
+                  return Bot.instance;
+                }
 
-if(publicUrl){
-  bot = new TelegramBot(token);
-  bot.setWebHook(publicUrl, {
-    certificate: './settings/crt.pem'
-  });
-}else{
-  bot = new TelegramBot(token, {polling: true});
-}
-    
+                Bot.instance = this;
 
-  bot.onText(/\/authorize/, async (msg) => {
+                this.token = token;
+                this.userAdminChat = userAdminChat;
+                this.commonChat = commonChat;
+                this.publicUrl = publicUrl;
+                this.bot;
 
-    const requestChatID = msg.chat.id;
-    const user = msg.from;
+              }
+  
+   init(){
 
-    //keyboard
-    const opts = {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            {
-              text: 'Accept',
-              callback_data: `accept`
-            },
-            {
-              text: 'Decline',
-              callback_data: `decline`
-            },
-          ]
-        ]
-      }
-    };
+    if(this.publicUrl){
 
-    //register callback query 
-    bot.on('callback_query', async (callbackQuery) => {
+      console.log("Public url finded");
 
-      const action = callbackQuery.data;
-      const msg = callbackQuery.message;
-      const opts = {
-        chat_id: msg.chat.id,
-        message_id: msg.message_id,
-      };
-    
-      if (action.includes('accept')) {
+      this.bot = new TelegramBot(this.token);
+      try {
 
-        console.log(user);
-        const result = await setUser(user)
+        this.bot.setWebHook(publicUrl, {
+          certificate: './settings/crt.pem'
+        });
+
+      } catch (error) {
         
-        if(result){
-          bot.sendMessage(userAdminChat, 'Пользователь добавлен');
-          bot.sendMessage(requestChatID, 'Пользователь добавлен');
-          
-        }else{
-          bot.sendMessage(userAdminChat, 'Запрос отклонён');
-          bot.sendMessage(requestChatID, 'Внутренняя ошибка сервера, см. лог');
-        }
+        console.log(error);
+      }
+      
+    }else{
+      
+      this.bot = new TelegramBot(this.token, {polling: true});
+    }
 
-      }else{
-        bot.sendMessage(userAdminChat, 'Запрос отклонён');
-        bot.sendMessage(requestChatID, 'Запрос отклонён');
+    //listeners
+
+    this.bot.onText(/\/authorize/, async (msg) => {
+
+      const requestChatID = msg.chat.id;
+      const user = msg.from;
+
+      if(requestChatID < 0){
+        this.bot.sendMessage(requestChatID, "Авторизируйтесь в приватном чате!")
+        return;
       }
 
-      bot.removeListener("callback_query");
-    });
+      //control listeners
+      if(this.bot.listenerCount('callback_query')){
+        this.bot.sendMessage(requestChatID, 'Терпение, мой друг, терпение');
+        return;
+      }
+  
+      //keyboard
+      const opts = {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: 'Accept',
+                callback_data: `accept`
+              },
+              {
+                text: 'Decline',
+                callback_data: `decline`
+              },
+            ]
+          ]
+        }
+      };
+  
+      //register callback query
+      console.log("Count event emmiters");
+      console.log(this.bot.listenerCount('callback_query'));
 
-    //send keyboard
-    bot.sendMessage(userAdminChat, `Разрешить ${user.first_name} ${user.last_name} загружать фотографии`, opts);
 
-  })
-
-  bot.on('sticker', (msg) => {
-    console.log(msg);
-  })
+      this.bot.on('callback_query', async (callbackQuery) => {
+  
+        const action = callbackQuery.data;
+        const msg = callbackQuery.message;
+        const opts = {
+          chat_id: msg.chat.id,
+          message_id: msg.message_id,
+        };
+      
+        if (action.includes('accept')) {
+  
+          console.log(user);
+          const result = await setUser(user)
+          
+          if(result){
+            this.bot.sendMessage(this.userAdminChat, 'Пользователь добавлен');
+            this.bot.sendMessage(requestChatID, 'Запрос принят, можете загружать фотографии');
+            
+          }else{
+            this.bot.sendMessage(this.userAdminChat, 'Внутренняя ошибка сервера');
+            this.bot.sendMessage(requestChatID, 'Внутренняя ошибка сервера, обратитесь к системному администратору');
+          }
+  
+        }else{
+          this.bot.sendMessage(this.userAdminChat, 'Запрос отклонён');
+          this.bot.sendMessage(requestChatID, 'Запрос отклонён');
+        }
+  
+        this.bot.removeListener("callback_query");
+      });
+  
+      //send keyboard
+      this.bot.sendMessage(this.userAdminChat, `Разрешить ${user.first_name} ${user.last_name} загружать фотографии`, opts);
+      this.bot.sendMessage(requestChatID, 'Ожидайте подтверждения');
+  
+    })
+  
+  }
+  
+  sendLog(message, chat){
+    this.bot.sendMessage(chat || this.commonChat, message);
+  }
 
 }
 
-export default runBot;
+const bot = new Bot(
+  token,
+  userAdminChat,
+  commonChat,
+  publicUrl
+);
+
+bot.init();
+
+export default bot;

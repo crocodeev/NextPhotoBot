@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton } from '@mui/material';
+import { Button, Grid, IconButton } from '@mui/material';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Box from '@mui/material/Box';
@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import UploadFormItem from './UploadFormItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal, choose } from '../store/slice';
+import { Container } from '@mui/system';
 
 
 const UploadForm = () => {
@@ -89,7 +90,7 @@ const UploadForm = () => {
           edge="end"
           sx={{ width: '100%' }}>
             <Typography align="justify" variant="subtitle1" color='text.primary' component="div" sx={{ flexGrow: 1 }}>
-            ...
+            Attach image
             </Typography>
             <input 
             hidden accept="image/*" 
@@ -99,20 +100,20 @@ const UploadForm = () => {
           </IconButton>
           </Box>
 
-          <Box sx={{ width: '100%', bgcolor: 'info.light'}}>
-          <IconButton 
-          sx={{ bgcolor: 'info.light', width: '100%'}}
-          aria-label="upload picture" 
-          component="label"
-          edge="end" 
-          onClick={handleUpload}>
-            <Typography align="justify" variant="h6" color='text.primary' component="div" sx={{ flexGrow: 1 }}>
-            UPLOAD
-            </Typography>
-            <UploadFileIcon color="secondary" />
-          </IconButton>
-          </Box>
-        
+          
+            <Button
+              variant="contained"
+              aria-label="upload picture" 
+              component="label"
+              onClick={handleUpload}
+              endIcon={<UploadFileIcon color="secondary" />}
+              sx={{ display: 'flex', margin: '5%', bgcolor: 'info.light'}}
+            >
+              <Typography align="justify" variant="h6" color='text.primary' component="div">
+              PRESS TO UPLOAD
+              </Typography>
+            </Button>
+           
         </div>
     )
     

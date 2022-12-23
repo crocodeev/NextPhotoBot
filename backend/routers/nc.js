@@ -6,7 +6,7 @@ import Nextcloud from '../nextcloud/nextcloud';
 import path from 'path';
 import { getBaseName } from '../utils/utils';
 import CyrillicToTranslit from 'cyrillic-to-translit-js';
-
+import bot from '../telegram/bot';
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 const nc = new Router();
@@ -43,7 +43,8 @@ nc.post('/file', async (req, res) => {
     const stamp = dayjs().format('YYYY-MM-DD_HH:mm');
     const files = Object.entries(req.files);
     const folder = req.body.folder;
-    
+    const user = typeof req.body.user === "string" ? JSON.parse(req.body.user) : req.body.user;
+    const userFullname = user.first_name + " " + user.last_name; 
 
     try{
 
@@ -60,6 +61,7 @@ nc.post('/file', async (req, res) => {
                 const fullName = path.join(folder, baseName);
                 console.log(fullName);    
                 return nextcloud.uploadFile(fullName, obj.data);
+
             }))
 
         }
@@ -68,7 +70,10 @@ nc.post('/file', async (req, res) => {
 
         console.log(result);
 
-        res.status(200).send('accepted');
+        res.status(200).send('Фотографии успешно загружены!');
+
+        bot.sendLog(`${userFullname} загрузил фотографии в папку ${getBaseName(folder)[0]}`);
+        bot.sendLog('Фотографии успешно загружены', user.id);
 
     }catch(error){
         console.log(error);
