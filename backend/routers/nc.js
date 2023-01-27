@@ -86,6 +86,8 @@ nc.post('/file', async (req, res) => {
 nc.post('/createfolder', async (req, res) => {
 
     const folderName = req.body.folder;
+    const user = typeof req.body.user === "string" ? JSON.parse(req.body.user) : req.body.user;
+    const userFullname = user.first_name + " " + user.last_name; 
 
     try {
         
