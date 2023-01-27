@@ -9,9 +9,9 @@ Writing for buisness process in my company, but may be suits for your purposes.
 * npm i
 * create ./setting/.env file
 
-> TELEGRAM=telegram token
-> PORT=server port
-> NC_USER=nextcloud user name
+> TELEGRAM= telegram token
+> PORT= server port
+> NC_USER= nextcloud user name
 > NC_PASSWD=nextcloud user password
 > NC_URL=nextcloud server url
 > USER_CHAT_ADMIN=admin chat for authorize user
@@ -38,6 +38,4 @@ Writing for buisness process in my company, but may be suits for your purposes.
 ### ToDo
 
 - [ ] add logs
-- [ ] create folder
 - [ ] add mongo db (now using file db)
-- [ ] send log to chat with user

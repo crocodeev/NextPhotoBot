@@ -3,17 +3,18 @@ import Spinner from "./companents/Spinner";
 import ButtonAppBar from "./companents/ButtonAppBar";
 import UploadForm from "./companents/UploadForm";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { green, yellow, blue } from '@mui/material/colors';
+import { green, yellow, blue, red } from '@mui/material/colors';
+import CreateFolderForm from "./companents/CreateFolderForm";
 
 const theme = createTheme({
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: green[500],
     },
     secondary: {
-      // This is green.A700 as hex.
       main: "#FFFFFF",
+      contrastText:"#000000",
+      darker: '#053e85'
     },
     info: {
       main: yellow[300],
@@ -21,8 +22,14 @@ const theme = createTheme({
     },
     text:{
       primary: "#FFFFFF"
+    },
+    cancel:{
+      main: red[300]
+    },
+    black:{
+      main: "#000000"
     }
-  },
+  }
 });
 
 const App = () => {
@@ -31,6 +38,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Spinner />
         <ButtonAppBar />
+        <CreateFolderForm />
         <UploadForm />
         <FolderList/>
       </ThemeProvider>

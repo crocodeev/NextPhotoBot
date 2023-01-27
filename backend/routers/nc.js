@@ -22,6 +22,8 @@ nc.post('/folders', async (req, res) => {
     try {
         const folders = await nextcloud.getFolder(folderName);
 
+        console.log(folders);
+
         res.status(200).json({
             folders: folders
         })
@@ -80,5 +82,25 @@ nc.post('/file', async (req, res) => {
     }
     
 });
+
+nc.post('/createfolder', async (req, res) => {
+
+    const folderName = req.body.folder;
+
+    try {
+        
+        const newFolder = await nextcloud.createFolder(folderName);
+        
+        bot.sendLog(`${userFullname} создал новый каталог ${newFolder}`);
+
+        res.status(200).json({
+            folder: newFolder
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+    }
+    
+})
 
 export default nc;

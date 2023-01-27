@@ -3,14 +3,14 @@ import FolderIcon from '@mui/icons-material/Folder';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
-import { forward, choose, toggleModal } from '../store/slice';
+import { forward, choose, toggleModal, parentFolder } from '../store/slice';
 import { getBaseName } from "../../backend/utils/utils";
-import { RemoveShoppingCartRounded } from "@mui/icons-material";
 
 const FolderItem = ({content}) => {
 
     const fullName = content;
     const choice = useSelector((state) => state.folders.choosen);
+    const createBlock = useSelector((state) => state.folders.createBlock);
     const dispatch = useDispatch();
 
     const tgPop = (message) => {
@@ -29,7 +29,8 @@ const FolderItem = ({content}) => {
     } 
 
     const getFolders = (fullName) => {
-    
+      
+      dispatch(parentFolder(fullName));
       dispatch(toggleModal());
 
       const requestOptions = {
@@ -53,13 +54,9 @@ const FolderItem = ({content}) => {
           })
           .then(data => JSON.stringify(data))
           .then(data => {
-
-              const obj = JSON.parse(JSON.parse(data))
-              const folders = obj.folders;
-
+              const obj = JSON.parse(JSON.parse(data));
               dispatch(toggleModal());
               dispatch(forward(obj.folders))
-
           })
           .catch(error => {
             dispatch(toggleModal());
@@ -74,7 +71,13 @@ const FolderItem = ({content}) => {
       dispatch(choose(result));
     }
 
-    const checkBoxType = (choice) => {
+    const checkBoxType = (choice, createBlock) => {
+
+      if(createBlock){
+        console.log(createBlock);
+        return <Checkbox checked={false} disabled={true} />
+      }
+
       if(choice === null){
         return <Checkbox checked={false} onChange={handleChange}/>
       }else if (choice === fullName){
@@ -84,7 +87,7 @@ const FolderItem = ({content}) => {
       }
     }
 
-    const checkBox = checkBoxType(choice);
+    const checkBox = checkBoxType(choice, createBlock);
 
     return(
       <Grid item xs={6}>

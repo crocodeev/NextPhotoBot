@@ -37,7 +37,7 @@ class Nextcloud {
             const folderNames = rawFolderArray.map(item => item.memento.name);
 
             if(folderNames.length === 0){
-                return [folderName]
+                return []
             }
 
             return folderNames;
@@ -54,6 +54,16 @@ class Nextcloud {
         
         try {
             const result = await this.client.createFile(name, data)
+            return result.baseName;
+        }catch(error){
+            return(error);
+        }
+    }
+
+    async createFolder(folderName){
+
+        try {
+            const result = await this.client.createFolder(folderName)
             return result.baseName;
         }catch(error){
             return(error);

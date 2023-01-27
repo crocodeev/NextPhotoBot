@@ -6,20 +6,19 @@ export const folderSlice = createSlice({
   name: 'folders',
   initialState: {
     folders: [startFolders],
+    parentFolder: [],
     choosen: null,
-    modal: false
+    modal: false,
+    createBlock:  false
   },
   reducers: {
     forward: (state, action) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
       state.folders.push(action.payload);
       state.choosen = null;
     },
     back: (state) => {
       state.folders.pop();
+      state.parentFolder.pop();
       state.choosen = null;
     },
     choose: (state, action) => {
@@ -27,11 +26,17 @@ export const folderSlice = createSlice({
     },
     toggleModal: (state) => {
       state.modal = !state.modal;
+    },
+    toggleCreateBlock: (state) => {
+      state.createBlock = !state.createBlock;
+    },
+    parentFolder: (state, action) => {
+      state.parentFolder.push(action.payload);
     }
-  },
+  }
 })
 
 // Action creators are generated for each case reducer function
-export const { forward, back, choose, toggleModal } = folderSlice.actions
+export const { forward, back, choose, toggleModal, toggleCreateBlock, parentFolder } = folderSlice.actions
 
 export default folderSlice.reducer
