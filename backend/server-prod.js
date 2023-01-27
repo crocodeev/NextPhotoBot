@@ -4,8 +4,7 @@
 require('dotenv').config({
     path: './settings/.env'
 });
-//bot
-import bot from './telegram/bot';
+
 
 //express
 const express = require('express');

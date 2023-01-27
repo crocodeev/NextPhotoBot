@@ -86,16 +86,19 @@ nc.post('/file', async (req, res) => {
 nc.post('/createfolder', async (req, res) => {
 
     const folderName = req.body.folder;
+    const user = typeof req.body.user === "string" ? JSON.parse(req.body.user) : req.body.user;
+    const userFullname = user.first_name + " " + user.last_name; 
 
     try {
         
         const newFolder = await nextcloud.createFolder(folderName);
-        
-        bot.sendLog(`${userFullname} создал новый каталог ${newFolder}`);
 
         res.status(200).json({
             folder: newFolder
         })
+
+        bot.sendLog(`${userFullname} создал новый каталог ${newFolder}`);
+
     } catch (error) {
         console.log(error);
         res.status(400).send(error);
