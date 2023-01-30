@@ -42,7 +42,7 @@ nc.post('/file', async (req, res) => {
         return res.status(400).send('No files were uploaded.');
     }
 
-    const stamp = dayjs().format('YYYY-MM-DD_HH_mm');
+    const stamp = dayjs().format('YYYY-MM-DD_HH-mm');
     const files = Object.entries(req.files);
     const folder = req.body.folder;
     const user = typeof req.body.user === "string" ? JSON.parse(req.body.user) : req.body.user;
