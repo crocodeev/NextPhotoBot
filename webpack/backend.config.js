@@ -24,12 +24,20 @@ module.exports = (env, argv) => {
       __filename: false,
     },
     externals: [nodeExternals()],
+    resolve: {
+      extensions: ['.ts','.js']
+    },
     module: {
       rules: [
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: ["babel-loader"],
+        },
+        {
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          use: "ts-loader"
         }
       ]
     }

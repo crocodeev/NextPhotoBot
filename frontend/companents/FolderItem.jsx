@@ -5,6 +5,10 @@ import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { forward, choose, toggleModal, parentFolder } from '../store/slice';
 import { getBaseName } from "../../backend/utils/utils";
+import { tgPopUp } from "../telegram"
+import Api from '../api';
+
+const api = Api.getInstance()
 
 const FolderItem = ({content}) => {
 
@@ -13,55 +17,24 @@ const FolderItem = ({content}) => {
     const createBlock = useSelector((state) => state.folders.createBlock);
     const dispatch = useDispatch();
 
-    const tgPop = (message) => {
-      //for test purpose
-      if (window.Telegram.WebApp.initData === '') {
-        console.log("NO TG");
-        console.log(message);
-        return;
-      }
-  
-      const params = {
-        message: message
-      }
-  
-      window.Telegram.WebApp.showPopup(params);
-    } 
-
     const getFolders = (fullName) => {
       
       dispatch(parentFolder(fullName));
       dispatch(toggleModal());
 
-      const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-              initData: window.Telegram.WebApp.initData,
-              user: window.Telegram.WebApp.initDataUnsafe.user,
-              folder: fullName })
-      };
-  
-      const url = window.location.protocol + "//" + window.location.host + "/nc/folders";
-      
-  
-      fetch(url, requestOptions)
-          .then(response => {
-              if(response.status === 401){
-                return Promise.reject("Your are not allowed to upload images");
-              }
-              return response.text();
-          })
-          .then(data => JSON.stringify(data))
-          .then(data => {
-              const obj = JSON.parse(JSON.parse(data));
+      const onResolve = (data) => {
               dispatch(toggleModal());
-              dispatch(forward(obj.folders))
-          })
-          .catch(error => {
-            dispatch(toggleModal());
-            tgPop(error);});
-  
+              dispatch(forward(data.folders))
+      }
+
+      const onReject = (error) => {
+              dispatch(toggleModal());
+              tgPopUp(error)
+      }
+
+      api.getFolders(fullName)
+      .then(onResolve)
+      .catch(onReject)
   }
 
     const baseName = getBaseName(content);

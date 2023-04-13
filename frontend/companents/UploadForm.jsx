@@ -7,7 +7,10 @@ import Typography from '@mui/material/Typography'
 import UploadFormItem from './UploadFormItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal, choose } from '../store/slice';
-import { Container } from '@mui/system';
+import { tgPopUp } from '../telegram'
+import Api from '../api';
+
+const api = Api.getInstance()
 
 
 const UploadForm = () => {
@@ -16,20 +19,7 @@ const UploadForm = () => {
     const dispatch = useDispatch();
     const [files, addFiles] = useState([]);
 
-    const tgPop = (message) => {
-        //for test purpose
-        if (window.Telegram.WebApp.initData === '') {
-          console.log("NO TG");
-          console.log(message);
-          return;
-        }
-    
-        const params = {
-          message: message
-        }
-    
-        window.Telegram.WebApp.showPopup(params);
-      } 
+
 
     const handleAddFile = (event) => {
         console.log(files);
@@ -47,30 +37,26 @@ const UploadForm = () => {
         files.forEach(item => {
             formdata.append(item.name, item)
         })
-    
-        formdata.append("folder", folderName);
-        formdata.append("user", JSON.stringify(window.Telegram.WebApp.initDataUnsafe.user));
-    
-        const requestOptions = {
-          method: 'POST',
-          body: formdata,
-        };
-    
-        const url = window.location.protocol + "//" + window.location.host + "/nc/file";
-    
+
+        const onResolve = (data) => {
+
+          dispatch(toggleModal());
+          dispatch(choose(null));
+          tgPopUp(data);
+        }
+        
+        const onReject = (error) => {
+
+          dispatch(toggleModal());
+          dispatch(choose(null));
+          console.log('error', error)
+        }
+
         dispatch(toggleModal());
     
-          fetch(url, requestOptions)
-          .then(response => response.text())
-          .then(result => {
-            dispatch(toggleModal());
-            dispatch(choose(null));
-            tgPop(result);
-          })
-          .catch(error => {
-            dispatch(toggleModal());
-            dispatch(choose(null));
-            console.log('error', error)});
+        api.uploadFiles(formdata, folderName)
+        .then(onResolve)
+        .then(onReject)
         
       }
 

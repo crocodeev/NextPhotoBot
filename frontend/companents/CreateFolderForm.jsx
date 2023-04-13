@@ -8,7 +8,10 @@ import Typography from '@mui/material/Typography'
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal, toggleCreateBlock, forward, back } from '../store/slice';
 import TextField from '@mui/material/TextField';
+import { tgPopUp } from '../telegram.ts'
+import Api from '../api.ts'
 
+const api = Api.getInstance()
 
 const CreateFolderForm = () => {
 
@@ -16,21 +19,6 @@ const CreateFolderForm = () => {
     const createBlock = useSelector((state) => state.folders.createBlock);
     const [folderName, setFolderName] = useState('');
     const dispatch = useDispatch();
-
-    const tgPop = (message) => {
-        //for test purpose
-        if (window.Telegram.WebApp.initData === '') {
-          console.log("NO TG");
-          console.log(message);
-          return;
-        }
-    
-        const params = {
-          message: message
-        }
-    
-        window.Telegram.WebApp.showPopup(params);
-      }
     
     const handleChange = (event) => {
       setFolderName(event.target.value);
@@ -42,67 +30,32 @@ const CreateFolderForm = () => {
     }  
 
     const handleCreateFolder = () => {
-
-        const withUnderscore = folderName.replace(" ", "_");
-        const withFullPath = parentFolder + "/" + withUnderscore;
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                initData: window.Telegram.WebApp.initData,
-                user: window.Telegram.WebApp.initDataUnsafe.user,
-                folder: withFullPath
-            })
-        };
     
-        const url = window.location.protocol + "//" + window.location.host + "/nc/createfolder";
-        
         dispatch(toggleModal());
-    
-          fetch(url, requestOptions)
-          .then(response => response.json())
-          .then(result => {
+
+        const onResolve = (data) => {
             dispatch(toggleCreateBlock());
-            tgPop(`${result.folder} успешно создана`);
-          })
-          .then(() => {
-            const requestOptions = {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 
-                  initData: window.Telegram.WebApp.initData,
-                  user: window.Telegram.WebApp.initDataUnsafe.user,
-                  folder: parentFolder[0] })
-              };
+            tgPopUp(`${result.folder} успешно создана`);}
 
-            const url = window.location.protocol + "//" + window.location.host + "/nc/folders";
-              
-            fetch(url, requestOptions)
-            .then(response => {
-              if(response.status === 401){
-                return Promise.reject("Your are not allowed to upload images");
-              }
-              return response.text();
-            })
-            .then(data => JSON.stringify(data))
-            .then(data => {
-    
-                const obj = JSON.parse(JSON.parse(data))
-    
-                dispatch(back());
-                dispatch(forward(obj.folders));
-                dispatch(toggleModal());
-    
-            })
+        //renew folder list
+        const onContinue = (data) => {
+            dispatch(back());
+            dispatch(forward(data.folders));
+            dispatch(toggleModal());}
 
-          })
-          .catch(error => {
+        const onReject = (error) => {
             dispatch(toggleModal());
-            console.log('error', error)})
-        
-      }
- 
+            console.log('error', error)}
+
+        api.createFolder(parentFolder, folderName)
+        .then(onResolve)
+        .then(() => api.getFolders(parentFolder[0]))
+        .then(onContinue)
+        .catch(onReject)      
+
+        }
+
+          
 
     if(!createBlock){
         return null;

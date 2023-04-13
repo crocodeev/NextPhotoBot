@@ -1,3 +1,3 @@
 const dayjs = require("dayjs");
 
-console.log(dayjs().format('YYYY-MM-DD_HH_mm'));
+console.log(dayjs().format('YYYY-MM-DD_HH-mm'));

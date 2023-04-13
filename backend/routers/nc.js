@@ -13,14 +13,14 @@ const nc = new Router();
 const nextcloud = new Nextcloud();
 
 //api.use(tgValidatiion);
-nc.use(userAuthorization)
+/*nc.use(userAuthorization)*/
 
 nc.post('/folders', async (req, res) => {
 
-    const folderName = req.body.folder;
+    const folderFullName = req.body.folderFullName;
 
     try {
-        const folders = await nextcloud.getFolder(folderName);
+        const folders = await nextcloud.getFolder(folderFullName);
 
         console.log(folders);
 
@@ -43,6 +43,8 @@ nc.post('/file', async (req, res) => {
     }
 
     const stamp = dayjs().format('YYYY-MM-DD_HH-mm');
+    console.log("STAMP");
+    console.log(stamp);
     const files = Object.entries(req.files);
     const folder = req.body.folder;
     const user = typeof req.body.user === "string" ? JSON.parse(req.body.user) : req.body.user;

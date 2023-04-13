@@ -17,6 +17,7 @@ import fileUpload from 'express-fileupload';
 const app = express();
 const DIST_DIR = __dirname;
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
+console.log(HTML_FILE);
 
 
     app.use(express.static(DIST_DIR));

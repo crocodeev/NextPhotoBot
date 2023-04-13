@@ -15,7 +15,6 @@ import fileUpload from 'express-fileupload';
 const app = express();
 const DIST_DIR = __dirname;
 const HTML_FILE = path.join(DIST_DIR, '../frontend/index.html');
-const ADMIN_HTML_FILE = path.join(DIST_DIR, '../frontend/admin.html');
 const compiler = webpack(config);
 
 

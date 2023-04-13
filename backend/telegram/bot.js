@@ -5,7 +5,7 @@ const TelegramBot = require('node-telegram-bot-api');
 
 const token = process.env.TELEGRAM;
 const userAdminChat = process.env.USER_CHAT_ADMIN;
-const commonChat = process.env.COMMON_CHAT;
+const logChats = process.env.LOG_CHATS.split(",");
 const publicUrl = process.env.PUBLIC_URL;
 
 class Bot {
@@ -23,7 +23,7 @@ class Bot {
 
                 this.token = token;
                 this.userAdminChat = userAdminChat;
-                this.commonChat = commonChat;
+                this.commonChats = commonChat;
                 this.publicUrl = publicUrl;
                 this.bot;
 
@@ -133,7 +133,13 @@ class Bot {
   }
   
   sendLog(message, chat){
-    this.bot.sendMessage(chat || this.commonChat, message);
+    if(chat){
+        this.bot.sendMessage(chat)
+    }else{
+      this.logChats.forEach((chat_id) => {
+        this.bot.sendMessage(chat_id, message);
+      })
+    }
   }
 
 }
@@ -141,7 +147,7 @@ class Bot {
 const bot = new Bot(
   token,
   userAdminChat,
-  commonChat,
+  logChats,
   publicUrl
 );
 
