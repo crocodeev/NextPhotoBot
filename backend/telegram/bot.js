@@ -12,7 +12,7 @@ class Bot {
 
   constructor(token,
               userAdminChat,
-              commonChat,
+              logChats,
               publicUrl){
 
                 if(!!Bot.instance){
@@ -23,7 +23,7 @@ class Bot {
 
                 this.token = token;
                 this.userAdminChat = userAdminChat;
-                this.commonChats = commonChat;
+                this.logChats = logChats;
                 this.publicUrl = publicUrl;
                 this.bot;
 
@@ -133,13 +133,19 @@ class Bot {
   }
   
   sendLog(message, chat){
-    if(chat){
+
+    try {
+      if(chat){
         this.bot.sendMessage(chat)
-    }else{
-      this.logChats.forEach((chat_id) => {
-        this.bot.sendMessage(chat_id, message);
-      })
+      }else{
+        this.logChats.forEach((chat_id) => {
+          this.bot.sendMessage(chat_id, message);
+        })
+      }
+    }catch(error){
+      console.log(error);
     }
+    
   }
 
 }

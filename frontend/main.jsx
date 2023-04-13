@@ -21,15 +21,21 @@ const theme = createTheme({
       light: blue[300]
     },
     text:{
-      primary: "#FFFFFF"
+      primary: "#FFFFFF",
+      secondary: window.Telegram.WebApp.themeParams.text_color
     },
     cancel:{
       main: red[300]
     },
     black:{
-      main: "#000000"
+      main: "#000000" 
+    },
+    background: {
+      paper: window.Telegram.WebApp.themeParams.bg_color,
+      default: "#FFFFFF"
     }
   }
+
 });
 
 const App = () => {

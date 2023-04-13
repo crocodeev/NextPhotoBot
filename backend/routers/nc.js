@@ -13,7 +13,7 @@ const nc = new Router();
 const nextcloud = new Nextcloud();
 
 //api.use(tgValidatiion);
-/*nc.use(userAuthorization)*/
+nc.use(userAuthorization)
 
 nc.post('/folders', async (req, res) => {
 

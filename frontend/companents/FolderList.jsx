@@ -15,7 +15,7 @@ export default function FolderList() {
   const currentFoldersList = folders[folders.length - 1];
 
 
-  if(!currentFoldersList.length){
+  if(!currentFoldersList.length && folders.length <= 3){
 
     return( 
       <Container  maxWidth="sm" sx={{ bgcolor: 'info.light', height: '100%' }}>
@@ -70,7 +70,10 @@ export default function FolderList() {
   const twoDimension = createTwoDimesion(currentFoldersList);
 
   return (
-    <Container  maxWidth="sm" sx={{ bgcolor: 'background.paper', height: '100%' }}>
+    <Container  maxWidth="sm" sx={{ bgcolor: 'background.paper', 
+    height: '100%', 
+    position: 'fixed', 
+    overflow: 'scroll' }}>
     <Box sx={{ width: '100%', bgcolor: 'background.paper'}}>
       {
         twoDimension.map((item,index) => {

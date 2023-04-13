@@ -15,6 +15,7 @@ const FolderItem = ({content}) => {
     const fullName = content;
     const choice = useSelector((state) => state.folders.choosen);
     const createBlock = useSelector((state) => state.folders.createBlock);
+    const deepLevel = useSelector((state) => state.folders.folders).length;
     const dispatch = useDispatch();
 
     const getFolders = (fullName) => {
@@ -46,8 +47,12 @@ const FolderItem = ({content}) => {
 
     const checkBoxType = (choice, createBlock) => {
 
+      // prevent to upload file at roots folders
+      if(deepLevel < 3){
+        return null
+      }
+
       if(createBlock){
-        console.log(createBlock);
         return <Checkbox checked={false} disabled={true} />
       }
 
@@ -68,7 +73,11 @@ const FolderItem = ({content}) => {
         <FolderIcon 
         sx={{ fontSize: 60}} color='info'
         onClick={() => {getFolders(fullName)}}/>
-        <Typography align='left' variant="h6" gutterBottom>
+        <Typography align='left'
+          variant="body1"
+          gutterBottom
+          color = "text.secondary"
+          sx={{ whiteSpace: "break-spaces", lineBreak: "anywhere"}}>
         {baseName}
         </Typography>
       </Grid>  
