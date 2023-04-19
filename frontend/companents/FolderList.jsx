@@ -14,37 +14,30 @@ export default function FolderList() {
   const folders = useSelector((state) => state.folders.folders);
   const currentFoldersList = folders[folders.length - 1];
 
-
-  if(!currentFoldersList.length && folders.length <= 3){
+  if(!currentFoldersList.length && folders.length > 3){
 
     return( 
       <Container  maxWidth="sm" sx={{ bgcolor: 'info.light', height: '100%' }}>
         <Box sx={{ width: '100%', bgcolor: 'info.light'}}>
-          <Typography variant="h5" color='black.main' component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h5" color='secondary.main' component="div" sx={{ flexGrow: 1 }}>
               FOLDER DOESN'T CONTAIN SUBFOLDERS
           </Typography>
         </Box>
       
 
-      <Grid container spacing={2}>
-      <Grid item xs={12}>
-      
-      </Grid>
+      <Grid container spacing={4}>
       <Grid item xs={6}>
-        <Typography variant="p" color='black.main' component="div" sx={{ flexGrow: 1 }}>
-          create new: 
+        <CreateFolder />
+        <Typography variant="h6" color='secondary.main' component="div" sx={{ flexGrow: 1 }}>
+          create new
         </Typography>
       </Grid>
-      <Grid item xs={6}>
-          <CreateFolder />
-      </Grid>
-      <Grid item xs={6}>
-        <Typography variant="p" color='black.main' component="div" sx={{ flexGrow: 1 }}>
-          turn back: 
+    
+      <Grid container="true" item xs={6}>
+        <BackButton />
+        <Typography variant="h6" color='secondary.main' component="div" sx={{ flexGrow: 1 }}>
+          turn back 
         </Typography>
-      </Grid>
-      <Grid item xs={6}>
-          <BackButton />
       </Grid>
 
       </Grid>
@@ -71,7 +64,7 @@ export default function FolderList() {
 
   return (
     <Container  maxWidth="sm" sx={{ bgcolor: 'background.paper', 
-    height: '100%', 
+    height: '90%', 
     position: 'fixed', 
     overflow: 'scroll' }}>
     <Box sx={{ width: '100%', bgcolor: 'background.paper'}}>

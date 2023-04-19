@@ -1,7 +1,7 @@
 {
-  "name": "telegrambotboilerplate",
+  "name": "sweet-memory",
   "version": "1.0.0",
-  "description": "telegram bot boiler plate",
+  "description": "webb app telegram bot allow to upload files to nextcloud",
   "main": "index.js",
   "scripts": {
     "https-fwd": "node https-forwarding.js",

@@ -39,7 +39,7 @@
 
     }
     
-    public async createFolder (parentFolder: string,
+    public createFolder (parentFolder: string,
                                 folder: string) {
 
         const withUnderscore = folder.replace(" ", "_");

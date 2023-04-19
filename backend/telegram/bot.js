@@ -8,6 +8,9 @@ const userAdminChat = process.env.USER_CHAT_ADMIN;
 const logChats = process.env.LOG_CHATS.split(",");
 const publicUrl = process.env.PUBLIC_URL;
 
+console.log(userAdminChat);
+console.log(logChats);
+
 class Bot {
 
   constructor(token,

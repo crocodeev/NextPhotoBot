@@ -33,7 +33,7 @@ const CreateFolderForm = () => {
     
         dispatch(toggleModal());
 
-        const onResolve = (data) => {
+        const onResolve = (result) => {
             dispatch(toggleCreateBlock());
             tgPopUp(`${result.folder} успешно создана`);}
 
@@ -48,10 +48,11 @@ const CreateFolderForm = () => {
             console.log('error', error)}
 
         api.createFolder(parentFolder, folderName)
-        .then(onResolve)
-        .then(() => api.getFolders(parentFolder[0]))
-        .then(onContinue)
-        .catch(onReject)      
+        .then((data) => onResolve(data))
+        .then(() => {
+            return api.getFolders(parentFolder[0])})
+        .then((data) => onContinue(data))
+        .catch((error) => onReject(error))      
 
         }
 
@@ -113,7 +114,7 @@ const CreateFolderForm = () => {
                 sx={{ display: 'flex', margin: '5%', bgcolor: 'info.light'}}
               >
                 <Typography align="justify" variant="h6" color='text.primary' component="div">
-                CREATE FOLDER
+                CREATE
                 </Typography>
               </Button>
           

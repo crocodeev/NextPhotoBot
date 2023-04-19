@@ -13,7 +13,7 @@ const nc = new Router();
 const nextcloud = new Nextcloud();
 
 //api.use(tgValidatiion);
-nc.use(userAuthorization)
+//nc.use(userAuthorization)
 
 nc.post('/folders', async (req, res) => {
 
@@ -99,7 +99,7 @@ nc.post('/createfolder', async (req, res) => {
             folder: newFolder
         })
 
-        bot.sendLog(`${userFullname} создал новый каталог ${newFolder}`);
+        bot.sendLog(`${userFullname} создал(а) новый каталог ${newFolder}`);
 
     } catch (error) {
         console.log(error);
