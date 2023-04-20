@@ -13,7 +13,7 @@ const nc = new Router();
 const nextcloud = new Nextcloud();
 
 //api.use(tgValidatiion);
-//nc.use(userAuthorization)
+nc.use(userAuthorization)
 
 nc.post('/folders', async (req, res) => {
 
@@ -21,8 +21,6 @@ nc.post('/folders', async (req, res) => {
 
     try {
         const folders = await nextcloud.getFolder(folderFullName);
-
-        console.log(folders);
 
         res.status(200).json({
             folders: folders
@@ -44,7 +42,7 @@ nc.post('/file', async (req, res) => {
     }
 
     const stamp = dayjs().format('YYYY-MM-DD_HH-mm');
-    const files = Object.entries(req.files);
+    const files = req.files.files;
     const folder = req.body.folder;
     const user = JSON.parse(req.body.user);
     const userFullname = user.first_name + " " + user.last_name; 
@@ -56,15 +54,11 @@ nc.post('/file', async (req, res) => {
             return Promise.all( 
 
                 files.map((item, index) => {
-                console.log("FROM CREATE PROMISE");    
-                console.log(item);    
-                const obj = item[1];
-                console.log(obj.data);
+        
                 const base = cyrillicToTranslit.transform(getBaseName(folder)[0], '_').toLowerCase();
                 const baseName = `${base}_${index}_${stamp}.jpg`;
                 const fullName = path.join(folder, baseName);  
-                return nextcloud.uploadFile(fullName, obj.data);
-
+                return nextcloud.uploadFile(fullName, item.data);        
             }))
 
         }

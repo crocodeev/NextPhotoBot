@@ -14,7 +14,7 @@ export default function FolderList() {
   const folders = useSelector((state) => state.folders.folders);
   const currentFoldersList = folders[folders.length - 1];
 
-  if(!currentFoldersList.length && folders.length > 3){
+  if(!currentFoldersList.length && folders.length > 2){
 
     return( 
       <Container  maxWidth="sm" sx={{ bgcolor: 'info.light', height: '100%' }}>

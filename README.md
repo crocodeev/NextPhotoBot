@@ -39,3 +39,5 @@ Writing for buisness process in my company, but may be suits for your purposes.
 
 - [ ] add logs
 - [ ] add mongo db (now using file db)
+- [ ] hold create folder deep at 3
+- [ ] add error handler on upload files

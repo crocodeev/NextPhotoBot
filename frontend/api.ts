@@ -28,10 +28,6 @@ import { tgPopUp } from "./telegram"
         formData.append("folder", folderName)
         formData.append("user", JSON.stringify(this.user));
 
-        tgPopUp(JSON.stringify(this.user))
-          
-        
-
         const requestOptions = {
             method: 'POST',
             body: formData

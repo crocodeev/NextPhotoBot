@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
       __dirname: false,
       __filename: false,
     },
-    externals: [nodeExternals()],
+    //externals: [nodeExternals()],
     resolve: {
       extensions: ['.ts','.js']
     },
