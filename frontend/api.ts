@@ -1,3 +1,4 @@
+import { tgPopUp } from "./telegram"
 
  class Api {
     private domain: string
@@ -25,11 +26,15 @@
                                  folderName: string) {
 
         formData.append("folder", folderName)
-        formData.append("user", this.user);
+        formData.append("user", JSON.stringify(this.user));
+
+        tgPopUp(JSON.stringify(this.user))
+          
+        
 
         const requestOptions = {
             method: 'POST',
-            body: formData,
+            body: formData
           };
         
         const url = this.domain + "/nc/file"  

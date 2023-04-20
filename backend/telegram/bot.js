@@ -139,7 +139,7 @@ class Bot {
 
     try {
       if(chat){
-        this.bot.sendMessage(chat)
+        this.bot.sendMessage(chat, message)
       }else{
         this.logChats.forEach((chat_id) => {
           this.bot.sendMessage(chat_id, message);

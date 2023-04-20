@@ -35,8 +35,10 @@ const UploadForm = () => {
         const formdata = new FormData();
       
         files.forEach(item => {
-            formdata.append(item.name, item)
+            formdata.append("files", item)
         })
+
+        console.log(formdata);
 
         const onResolve = (data) => {
 
@@ -55,8 +57,8 @@ const UploadForm = () => {
         dispatch(toggleModal());
     
         api.uploadFiles(formdata, folderName)
-        .then(onResolve)
-        .then(onReject)
+        .then((data) => onResolve(data))
+        .catch((error) => onReject(error))
         
       }
 

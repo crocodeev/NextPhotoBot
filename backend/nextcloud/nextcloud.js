@@ -51,6 +51,10 @@ class Nextcloud {
 
 
     async uploadFile(name, data){
+
+        console.log("FROM NC");
+        console.log(name);
+        console.log(data);
         
         try {
             const result = await this.client.createFile(name, data)

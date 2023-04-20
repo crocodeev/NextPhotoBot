@@ -38,18 +38,17 @@ nc.post('/folders', async (req, res) => {
 
 nc.post('/file', async (req, res) => {
 
+
     if (!req.files) {
         return res.status(400).send('No files were uploaded.');
     }
 
     const stamp = dayjs().format('YYYY-MM-DD_HH-mm');
-    console.log("STAMP");
-    console.log(stamp);
     const files = Object.entries(req.files);
     const folder = req.body.folder;
-    const user = typeof req.body.user === "string" ? JSON.parse(req.body.user) : req.body.user;
+    const user = JSON.parse(req.body.user);
     const userFullname = user.first_name + " " + user.last_name; 
-
+  
     try{
 
         const sendAll = async () => {
@@ -57,13 +56,13 @@ nc.post('/file', async (req, res) => {
             return Promise.all( 
 
                 files.map((item, index) => {
+                console.log("FROM CREATE PROMISE");    
+                console.log(item);    
                 const obj = item[1];
+                console.log(obj.data);
                 const base = cyrillicToTranslit.transform(getBaseName(folder)[0], '_').toLowerCase();
                 const baseName = `${base}_${index}_${stamp}.jpg`;
-                console.log(baseName);
-                console.log(folder);
-                const fullName = path.join(folder, baseName);
-                console.log(fullName);    
+                const fullName = path.join(folder, baseName);  
                 return nextcloud.uploadFile(fullName, obj.data);
 
             }))
@@ -77,6 +76,7 @@ nc.post('/file', async (req, res) => {
         res.status(200).send('Фотографии успешно загружены!');
 
         bot.sendLog(`${userFullname} загрузил фотографии в папку ${getBaseName(folder)[0]}`);
+        console.log(user.id);
         bot.sendLog('Фотографии успешно загружены', user.id);
 
     }catch(error){
