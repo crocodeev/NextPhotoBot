@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.2
 FROM node:16
-LABEL org.opencontainers.image.media-type="application/vnd.docker.distribution.manifest.v2+json"
+LABEL org.opencontainers.image.manifest.version=2
 
 WORKDIR /app
 
