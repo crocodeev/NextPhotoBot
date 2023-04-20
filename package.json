@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "https-fwd": "node https-forwarding.js",
-    "build:dev": "webpack --mode development --config ./webpack/backend.config.js && webpack --mode development --config ./webpack/frontend.dev.config.js",
+    "build:dev": "webpack --mode development --config ./webpack/backend.dev.config.js && webpack --mode development --config ./webpack/frontend.dev.config.js",
     "build:prod": "webpack --mode production --config ./webpack/backend.config.js && webpack --mode production --config ./webpack/frontend.prod.config.js",
-    "build:dev-server": "webpack --mode development --config ./webpack/backend.config.js",
+    "build:dev-server": "webpack --mode development --config ./webpack/backend.dev.config.js",
     "start": "node ./dist/server.js",
     "dev:server": "concurrently \"npm run build:dev-server\" \"npm run start\"",
     "dev:tg": "concurrently \"npm run https-fwd\" \"npm run build:dev\" \"npm run start\""

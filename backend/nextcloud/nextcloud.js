@@ -1,7 +1,6 @@
 import Client, { File, Folder, Tag, Share, Server } from "nextcloud-node-client";
 import * as dotenv from 'dotenv'; 
 dotenv.config();
-import path from 'path';
 
 const user = process.env.NC_USER;
 const passwd = process.env.NC_PASSWD;
@@ -51,10 +50,6 @@ class Nextcloud {
 
 
     async uploadFile(name, data){
-
-        console.log("FROM NC");
-        console.log(name);
-        console.log(data);
         
         try {
             const result = await this.client.createFile(name, data)
