@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.2
 FROM node:16
 
 WORKDIR /app
