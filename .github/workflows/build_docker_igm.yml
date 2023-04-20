@@ -35,6 +35,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{secrets.DOCKERHUB_USERNAME}}/sweetmemory
+          mediaType: 'application/vnd.docker.distribution.manifest.v2+json'
 
               
 
