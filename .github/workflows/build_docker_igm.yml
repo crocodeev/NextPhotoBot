@@ -24,7 +24,7 @@ jobs:
       - name: Install Docker
         uses: crazy-max/ghaction-setup-docker@v1
         with:
-          version: 19.03.1
+          version: v19.03.14
       - name: Build Image
         run:  docker build . --tag crocodeev/sweetmemory
       - name: Login to Docker Hub
