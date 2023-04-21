@@ -24,9 +24,9 @@ jobs:
       - name: Build and Push Docker Image
         uses: manusa/actions-publish-docker@v1.1.2
         with:
-          name: ${{ secrets.DOCKER_HUB_USER }}/image_name
-          username: ${{ secrets.DOCKER_HUB_USER }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          name: ${{ secrets.DOCKERHUB_USERNAME }}/image_name
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
                   
 
       
