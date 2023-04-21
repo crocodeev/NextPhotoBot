@@ -4,10 +4,10 @@ LABEL org.opencontainers.image.manifest.version=2
 
 WORKDIR /app
 
-COPY . .
+COPY ./dist .
 
 RUN npm install
 
 EXPOSE 8080
 
-CMD ["node", "./dist/server.js"]
+CMD ["node", "server.js"]
